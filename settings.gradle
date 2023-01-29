@@ -14,3 +14,6 @@ dependencyResolutionManagement {
 }
 rootProject.name = "DirectCalling"
 include ':app'
+include ':data'
+include ':app:domain'
+include ':domain'
