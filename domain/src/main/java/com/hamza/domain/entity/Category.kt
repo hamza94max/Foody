@@ -1,6 +1,6 @@
-package com.hamza.Foody.data.Models
+package com.hamza.domain.entity
 
-data class CategoryX(
+data class Category(
     val idCategory: String,
     val strCategory: String,
     val strCategoryDescription: String,
