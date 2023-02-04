@@ -17,7 +17,7 @@ class MealsViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _categories: MutableStateFlow<CategoryResponse?> = MutableStateFlow(null)
-    val categories: StateFlow<CategoryResponse?> = _categories
+    var categories: StateFlow<CategoryResponse?> = _categories
 
 
     fun getMeals() {
