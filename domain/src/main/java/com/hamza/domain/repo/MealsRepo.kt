@@ -4,5 +4,5 @@ import com.hamza.domain.entity.CategoryResponse
 
 interface MealsRepo {
 
-    fun getDataFromRemote(): CategoryResponse
+    suspend fun getDataFromRemote(): CategoryResponse
 }

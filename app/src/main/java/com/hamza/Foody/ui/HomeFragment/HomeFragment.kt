@@ -1,16 +1,16 @@
 package com.hamza.Foody.ui.HomeFragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.asLiveData
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hamza.Foody.databinding.FragmentHomeBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -19,7 +19,7 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
 
 
-    private lateinit var homeadapter: HomeAdapter
+    private var homeadapter: HomeAdapter = HomeAdapter()
 
     private val mealsViewModel by viewModels<MealsViewModel>()
 
@@ -38,22 +38,19 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         mealsViewModel.getMeals()
-        setUpRecyclerView()
 
-        observeToLiveData()
+        lifecycleScope.launch {
+            observeToLiveData()
+        }
 
 
     }
 
-    private fun observeToLiveData() {
-        mealsViewModel.categories.asLiveData().observe(viewLifecycleOwner) {
-            if (it != null) {
-                homeadapter.differ.submitList(it.categories)
-            } else {
-                Log.i("response", "categories is null")
-            }
+    private suspend fun observeToLiveData() {
+        mealsViewModel.categories.collect {
+            homeadapter.differ.submitList(it?.categories)
+            setUpRecyclerView()
         }
-        mealsViewModel.getMeals()
     }
 
 

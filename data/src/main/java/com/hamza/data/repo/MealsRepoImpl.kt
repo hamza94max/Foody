@@ -6,7 +6,7 @@ import com.hamza.domain.repo.MealsRepo
 
 class MealsRepoImpl(private val apiService: ApiService) : MealsRepo {
     
-    override fun getDataFromRemote(): CategoryResponse = apiService.getMeals()
+    override suspend fun getDataFromRemote(): CategoryResponse = apiService.getMeals()
 
 
 }
