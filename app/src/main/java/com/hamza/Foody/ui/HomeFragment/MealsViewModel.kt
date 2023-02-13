@@ -7,7 +7,6 @@ import com.hamza.domain.entity.CategoryResponse
 import com.hamza.domain.usecase.GetMeals
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -17,7 +16,7 @@ class MealsViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _categories: MutableStateFlow<CategoryResponse?> = MutableStateFlow(null)
-    var categories: StateFlow<CategoryResponse?> = _categories
+    var categories: MutableStateFlow<CategoryResponse?> = _categories
 
 
     fun getMeals() {

@@ -1,11 +1,9 @@
-package com.hamza.Foody.ui.HomeFragment
+package com.hamza.Foody.ui.FilterCategoriesFragment
 
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -13,11 +11,9 @@ import com.bumptech.glide.Glide
 import com.hamza.Foody.databinding.CategoryItemBinding
 import com.hamza.domain.entity.Category
 
-class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolderr>() {
+class FilterCategoriesAdapter : RecyclerView.Adapter<FilterCategoriesAdapter.ViewHolder>() {
 
-    private lateinit var navController: NavController
-
-    inner class ViewHolderr(val binding: CategoryItemBinding) :
+    inner class ViewHolder(val binding: CategoryItemBinding) :
         RecyclerView.ViewHolder(binding.root)
 
     private val diffCallback = object : DiffUtil.ItemCallback<Category>() {
@@ -32,13 +28,16 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolderr>() {
 
     var differ = AsyncListDiffer(this, diffCallback)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeAdapter.ViewHolderr {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): FilterCategoriesAdapter.ViewHolder {
         val view = CategoryItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ViewHolderr(view)
+        return ViewHolder(view)
     }
 
     @SuppressLint("SetTextI18n")
-    override fun onBindViewHolder(holder: HomeAdapter.ViewHolderr, position: Int) {
+    override fun onBindViewHolder(holder: FilterCategoriesAdapter.ViewHolder, position: Int) {
 
         val currentItem = differ.currentList[position]
 
@@ -48,13 +47,6 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolderr>() {
             .with(holder.itemView.context)
             .load(currentItem.strCategoryThumb)
             .into(holder.binding.categoryImageView)
-
-
-        holder.binding.cardView.setOnClickListener {
-            navController = Navigation.findNavController(it)
-            val action = HomeFragmentDirections.actionHomeFragmentToFilterCategoriesFragment()
-            navController.navigate(action)
-        }
 
     }
 
