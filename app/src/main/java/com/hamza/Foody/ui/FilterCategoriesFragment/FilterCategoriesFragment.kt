@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.navArgs
 import com.hamza.Foody.databinding.FragmentFilterCategoriesBinding
 import com.hamza.Foody.ui.HomeFragment.MealsViewModel
 import com.hamza.domain.entity.Category
@@ -19,6 +20,8 @@ class FilterCategoriesFragment constructor() : Fragment() {
 
     private var _binding: FragmentFilterCategoriesBinding? = null
     private val binding get() = _binding!!
+
+    val args: FilterCategoriesFragmentArgs by navArgs()
 
 
     private val mealsViewModel by viewModels<MealsViewModel>()
@@ -40,8 +43,9 @@ class FilterCategoriesFragment constructor() : Fragment() {
 
         lifecycleScope.launch {
             getCategories()
-
         }
+
+
 
     }
 
@@ -64,5 +68,11 @@ class FilterCategoriesFragment constructor() : Fragment() {
             )
             Log.i("filterFrag", category.strCategory)
         }
+
+        openSelectedMeal(Integer.valueOf(args.category.idCategory) - 1)
+    }
+
+    private fun openSelectedMeal(position: Int) {
+        binding.tabLayout.getTabAt(position)?.select()
     }
 }

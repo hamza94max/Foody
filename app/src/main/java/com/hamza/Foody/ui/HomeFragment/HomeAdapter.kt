@@ -52,7 +52,8 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolderr>() {
 
         holder.binding.cardView.setOnClickListener {
             navController = Navigation.findNavController(it)
-            val action = HomeFragmentDirections.actionHomeFragmentToFilterCategoriesFragment()
+            val action =
+                HomeFragmentDirections.actionHomeFragmentToFilterCategoriesFragment(currentItem)
             navController.navigate(action)
         }
 

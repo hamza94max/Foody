@@ -7,4 +7,8 @@ interface ApiService {
 
     @GET("categories.php")
     suspend fun getMeals(): CategoryResponse
+
+
+//    @GET("lookup.php")
+//    suspend fun getMealDetails():
 }

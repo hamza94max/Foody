@@ -14,9 +14,17 @@
             android:id="@+id/action_homeFragment_to_filterCategoriesFragment"
             app:destination="@id/filterCategoriesFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/filterCategoriesFragment"
         android:name="com.hamza.Foody.ui.FilterCategoriesFragment.FilterCategoriesFragment"
         android:label="fragment_filter_categories"
-        tools:layout="@layout/fragment_filter_categories" />
+        tools:layout="@layout/fragment_filter_categories">
+
+        <argument
+            android:name="category"
+            app:argType="com.hamza.domain.entity.Category" />
+
+
+    </fragment>
 </navigation>
