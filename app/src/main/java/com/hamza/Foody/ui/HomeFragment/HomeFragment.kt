@@ -12,14 +12,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.hamza.Foody.databinding.FragmentHomeBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
 
-    private var _binding: FragmentHomeBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var binding: FragmentHomeBinding
 
-    private var homeAdapter: HomeAdapter = HomeAdapter()
+    @Inject
+    lateinit var homeAdapter: HomeAdapter
     private val mealsViewModel by viewModels<MealsViewModel>()
 
     override fun onCreateView(
@@ -27,7 +28,7 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
 

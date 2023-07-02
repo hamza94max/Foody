@@ -10,8 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.hamza.Foody.databinding.CategoryItemBinding
 import com.hamza.domain.entity.Category
+import javax.inject.Inject
 
-class FilterCategoriesAdapter : RecyclerView.Adapter<FilterCategoriesAdapter.ViewHolder>() {
+class FilterCategoriesAdapter @Inject constructor() :
+    RecyclerView.Adapter<FilterCategoriesAdapter.ViewHolder>() {
 
     inner class ViewHolder(val binding: CategoryItemBinding) :
         RecyclerView.ViewHolder(binding.root)

@@ -16,23 +16,20 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class FilterCategoriesFragment constructor() : Fragment() {
+class FilterCategoriesFragment : Fragment() {
 
-    private var _binding: FragmentFilterCategoriesBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var binding: FragmentFilterCategoriesBinding
 
-    val args: FilterCategoriesFragmentArgs by navArgs()
-
+    private val args: FilterCategoriesFragmentArgs by navArgs()
 
     private val mealsViewModel by viewModels<MealsViewModel>()
     private var categoryList: List<Category> = emptyList()
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentFilterCategoriesBinding.inflate(layoutInflater, container, false)
+        binding = FragmentFilterCategoriesBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
 
@@ -45,11 +42,7 @@ class FilterCategoriesFragment constructor() : Fragment() {
             getCategories()
         }
 
-
-
     }
-
-
     private suspend fun getCategories() {
         mealsViewModel.categories.collect {
             it?.let { response ->

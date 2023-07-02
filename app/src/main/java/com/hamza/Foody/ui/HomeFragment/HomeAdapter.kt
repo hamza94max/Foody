@@ -12,12 +12,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.hamza.Foody.databinding.CategoryItemBinding
 import com.hamza.domain.entity.Category
+import javax.inject.Inject
 
-class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolderr>() {
+class HomeAdapter @Inject constructor() : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
 
     private lateinit var navController: NavController
 
-    inner class ViewHolderr(val binding: CategoryItemBinding) :
+    inner class ViewHolder(val binding: CategoryItemBinding) :
         RecyclerView.ViewHolder(binding.root)
 
     private val diffCallback = object : DiffUtil.ItemCallback<Category>() {
@@ -32,13 +33,13 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolderr>() {
 
     var differ = AsyncListDiffer(this, diffCallback)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeAdapter.ViewHolderr {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeAdapter.ViewHolder {
         val view = CategoryItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ViewHolderr(view)
+        return ViewHolder(view)
     }
 
     @SuppressLint("SetTextI18n")
-    override fun onBindViewHolder(holder: HomeAdapter.ViewHolderr, position: Int) {
+    override fun onBindViewHolder(holder: HomeAdapter.ViewHolder, position: Int) {
 
         val currentItem = differ.currentList[position]
 
