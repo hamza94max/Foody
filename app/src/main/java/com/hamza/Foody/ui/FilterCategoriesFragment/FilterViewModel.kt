@@ -23,7 +23,6 @@ class FilterViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 _meals.value = getMealsByCategory(categoryName)
-                Log.i("hamzafilter", "Response/ " + _meals.value.toString())
             } catch (e: Exception) {
                 Log.i("hamzafilter", e.message.toString())
             }

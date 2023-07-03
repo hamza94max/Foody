@@ -43,12 +43,12 @@ class FilterCategoriesAdapter @Inject constructor() :
 
         val currentItem = differ.currentList[position]
 
-        holder.binding.categoryNameTextView.text = currentItem.mealName
+        holder.binding.mealNameTextView.text = currentItem.mealName
 
         Glide
             .with(holder.itemView.context)
             .load(currentItem.imageOfMeal)
-            .into(holder.binding.categoryImageView)
+            .into(holder.binding.mealImageView)
 
     }
 

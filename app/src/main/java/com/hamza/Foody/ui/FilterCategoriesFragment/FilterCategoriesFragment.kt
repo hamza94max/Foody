@@ -17,7 +17,9 @@ import com.hamza.Foody.ui.HomeFragment.CategoriesViewModel
 import com.hamza.domain.entity.Category
 import com.hamza.domain.entity.Meal
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -49,12 +51,18 @@ class FilterCategoriesFragment : Fragment() {
 
         categoriesViewModel.getCategories()
 
-
+        filterViewModel.getMeals("Beef")
 
 
         lifecycleScope.launch {
             getCategories()
-            getMealsByCategory()
+        }
+
+        lifecycleScope.launch {
+            withContext(Dispatchers.Main) {
+                getMealsByCategory()
+            }
+
         }
 
 
@@ -62,15 +70,17 @@ class FilterCategoriesFragment : Fragment() {
 
 
     private suspend fun getMealsByCategory() {
+        Log.i("hamzaF", "Collecting meals")
+
         filterViewModel.meals.collect {
             it?.let { response ->
-                Log.i("hamzafilter", "response in fragment/ ${response.meals}")
                 meals = response.meals
+                Log.i("hamzaF", "meals is in fragment/ $meals")
+                openSelectedCategory(0)
                 binding.notFoundTextView.showIf { meals.isEmpty() }
             }
         }
     }
-
 
     private suspend fun getCategories() {
         categoriesViewModel.categories.collect {
@@ -89,8 +99,6 @@ class FilterCategoriesFragment : Fragment() {
                 binding.tabLayout.newTab().setText(category.strCategory)
             )
         }
-
-        openSelectedCategory(Integer.valueOf(args.category.idCategory) - 1)
     }
 
     private fun openSelectedCategory(position: Int) {
@@ -100,14 +108,13 @@ class FilterCategoriesFragment : Fragment() {
 
     }
 
-    private fun getNameOfCategory(position: Int): String {
-        return categoryList[position].strCategory
-    }
+//    private fun getNameOfCategory(position: Int): String {
+//        return categoryList[position].strCategory
+//    }
 
     private fun setUpRecyclerView(position: Int) {
 
-        filterViewModel.getMeals(getNameOfCategory(position))
-
+        Log.d("hamzaF", "meals is $meals")
         filterCategoriesAdapter.differ.submitList(meals)
         binding.filterMealsRecyclerView.apply {
             layoutManager = GridLayoutManager(context, 2, LinearLayoutManager.VERTICAL, false)
