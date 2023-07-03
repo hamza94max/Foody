@@ -8,22 +8,22 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.hamza.Foody.databinding.CategoryItemBinding
-import com.hamza.domain.entity.Category
+import com.hamza.Foody.databinding.MealItemBinding
+import com.hamza.domain.entity.Meal
 import javax.inject.Inject
 
 class FilterCategoriesAdapter @Inject constructor() :
     RecyclerView.Adapter<FilterCategoriesAdapter.ViewHolder>() {
 
-    inner class ViewHolder(val binding: CategoryItemBinding) :
+    inner class ViewHolder(val binding: MealItemBinding) :
         RecyclerView.ViewHolder(binding.root)
 
-    private val diffCallback = object : DiffUtil.ItemCallback<Category>() {
-        override fun areItemsTheSame(oldItem: Category, newItem: Category): Boolean {
-            return oldItem.idCategory == newItem.idCategory
+    private val diffCallback = object : DiffUtil.ItemCallback<Meal>() {
+        override fun areItemsTheSame(oldItem: Meal, newItem: Meal): Boolean {
+            return oldItem.mealId == newItem.mealId
         }
 
-        override fun areContentsTheSame(oldItem: Category, newItem: Category): Boolean {
+        override fun areContentsTheSame(oldItem: Meal, newItem: Meal): Boolean {
             return oldItem == newItem
         }
     }
@@ -34,7 +34,7 @@ class FilterCategoriesAdapter @Inject constructor() :
         parent: ViewGroup,
         viewType: Int
     ): FilterCategoriesAdapter.ViewHolder {
-        val view = CategoryItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val view = MealItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(view)
     }
 
@@ -43,11 +43,11 @@ class FilterCategoriesAdapter @Inject constructor() :
 
         val currentItem = differ.currentList[position]
 
-        holder.binding.categoryNameTextView.text = currentItem.strCategory
+        holder.binding.categoryNameTextView.text = currentItem.mealName
 
         Glide
             .with(holder.itemView.context)
-            .load(currentItem.strCategoryThumb)
+            .load(currentItem.imageOfMeal)
             .into(holder.binding.categoryImageView)
 
     }

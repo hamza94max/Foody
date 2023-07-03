@@ -23,7 +23,7 @@ class HomeFragment : Fragment() {
     @Inject
     lateinit var homeAdapter: HomeAdapter
 
-    private val mealsViewModel by viewModels<MealsViewModel>()
+    private val categoriesViewModel by viewModels<CategoriesViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,7 +37,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mealsViewModel.getMeals()
+        categoriesViewModel.getCategories()
 
         lifecycleScope.launch { observeToMealsData() }
 
@@ -46,8 +46,8 @@ class HomeFragment : Fragment() {
     }
 
     private suspend fun observeToMealsData() {
-        mealsViewModel.categories.collect {
-            setUpRecyclerView(it?.categories!!)
+        categoriesViewModel.categories.collect {
+            it?.categories?.let { categories -> setUpRecyclerView(categories) }
         }
     }
 

@@ -11,7 +11,7 @@ inline fun <T : View> T.showIf(condition: () -> Boolean) {
 }
 
 fun View.hide() {
-    visibility = View.INVISIBLE
+    visibility = View.GONE
 }
 
 fun View.show() {
