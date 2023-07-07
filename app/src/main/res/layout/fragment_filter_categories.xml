@@ -5,57 +5,62 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="7dp">
+        android:layout_height="match_parent">
 
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabLayout"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:contentDescription="tablayout"
-            app:tabMode="scrollable" />
-
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/categoryDescriptionCardView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tabLayout"
-            android:layout_margin="16dp"
-            app:cardCornerRadius="7dp">
-
-            <TextView
-                android:id="@+id/categoryDescriptionTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="7dp"
-                android:textSize="18sp" />
-
-        </androidx.cardview.widget.CardView>
-
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/filterMealsRecyclerView"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/categoryDescriptionCardView"
-            app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
-            app:spanCount="2"
-            android:layout_marginTop="8dp"
-            tools:listitem="@layout/meal_item" />
+            android:orientation="vertical"
+            android:padding="7dp">
 
-        <TextView
-            android:id="@+id/notFoundTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="Not Available"
-            android:visibility="gone" />
-
-    </RelativeLayout>
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabLayout"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:contentDescription="tablayout"
+                app:tabMode="scrollable" />
 
 
+            <androidx.cardview.widget.CardView
+                android:id="@+id/categoryDescriptionCardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tabLayout"
+                android:layout_margin="16dp"
+                app:cardCornerRadius="7dp">
+
+                <TextView
+                    android:id="@+id/categoryDescriptionTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="7dp"
+                    android:textSize="18sp" />
+
+            </androidx.cardview.widget.CardView>
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/filterMealsRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/categoryDescriptionCardView"
+                android:layout_marginTop="8dp"
+                app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
+                app:spanCount="2"
+                tools:listitem="@layout/meal_item" />
+
+            <TextView
+                android:id="@+id/notFoundTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="Not Available"
+                android:visibility="gone" />
+
+        </RelativeLayout>
+
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
