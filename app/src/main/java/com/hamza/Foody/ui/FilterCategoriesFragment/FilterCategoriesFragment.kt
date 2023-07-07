@@ -1,7 +1,6 @@
 package com.hamza.Foody.ui.FilterCategoriesFragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +14,6 @@ import com.google.android.material.tabs.TabLayout
 import com.hamza.Foody.databinding.FragmentFilterCategoriesBinding
 import com.hamza.Foody.ui.HomeFragment.CategoriesViewModel
 import com.hamza.domain.entity.Category
-import com.hamza.domain.entity.Meal
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -34,7 +32,6 @@ class FilterCategoriesFragment : Fragment() {
     lateinit var filterCategoriesAdapter: FilterCategoriesAdapter
 
     private var categoryList: List<Category> = emptyList()
-    private var meals: List<Meal> = emptyList()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,24 +50,18 @@ class FilterCategoriesFragment : Fragment() {
             getCategories()
         }
 
-        filterViewModel.getMeals(args.category.strCategory)
-
-        setUpRecyclerView()
-
         binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 openSelectedCategory(tab.position)
                 val categoryName = tab.text.toString()
                 filterViewModel.getMeals(categoryName)
                 setUpRecyclerView()
-                Log.i("hamzaF", "pos is " + tab.position)
-
+                binding.categoryDescriptionTextView.text =
+                    categoryList.find { it.strCategory == categoryName }?.strCategoryDescription
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
-
             override fun onTabReselected(tab: TabLayout.Tab?) {}
-
         })
 
     }
@@ -92,16 +83,23 @@ class FilterCategoriesFragment : Fragment() {
                 binding.tabLayout.newTab().setText(category.strCategory)
             )
         }
+        getSelectedCategory()
+    }
+
+    private fun getSelectedCategory() {
+        binding.categoryDescriptionTextView.text = args.category.strCategoryDescription
+        filterViewModel.getMeals(args.category.strCategory)
+        openSelectedCategory(Integer.valueOf(args.category.idCategory) - 1)
     }
 
     private fun openSelectedCategory(position: Int) {
+        setUpRecyclerView()
         binding.tabLayout.getTabAt(position)?.select()
 
-        setUpRecyclerView()
+
     }
 
     private fun setUpRecyclerView() {
-        Log.i("hamzaF", "recyclerview is activated ")
         filterViewModel.meals.observe(viewLifecycleOwner) {
             filterCategoriesAdapter.differ.submitList(it?.meals)
         }
@@ -109,7 +107,6 @@ class FilterCategoriesFragment : Fragment() {
         binding.filterMealsRecyclerView.apply {
             layoutManager = GridLayoutManager(context, 2, LinearLayoutManager.VERTICAL, false)
             adapter = filterCategoriesAdapter
-
         }
     }
 
