@@ -11,15 +11,13 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.hamza.Foody.Utils.showIf
+import com.google.android.material.tabs.TabLayout
 import com.hamza.Foody.databinding.FragmentFilterCategoriesBinding
 import com.hamza.Foody.ui.HomeFragment.CategoriesViewModel
 import com.hamza.domain.entity.Category
 import com.hamza.domain.entity.Meal
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -51,35 +49,30 @@ class FilterCategoriesFragment : Fragment() {
 
         categoriesViewModel.getCategories()
 
-        filterViewModel.getMeals("Beef")
-
-
         lifecycleScope.launch {
             getCategories()
         }
 
-        lifecycleScope.launch {
-            withContext(Dispatchers.Main) {
-                getMealsByCategory()
+        filterViewModel.getMeals(args.category.strCategory)
+
+        setUpRecyclerView()
+
+        binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                openSelectedCategory(tab.position)
+                val categoryName = tab.text.toString()
+                filterViewModel.getMeals(categoryName)
+                setUpRecyclerView()
+                Log.i("hamzaF", "pos is " + tab.position)
+
             }
 
-        }
+            override fun onTabUnselected(tab: TabLayout.Tab?) {}
 
+            override fun onTabReselected(tab: TabLayout.Tab?) {}
 
-    }
+        })
 
-
-    private suspend fun getMealsByCategory() {
-        Log.i("hamzaF", "Collecting meals")
-
-        filterViewModel.meals.collect {
-            it?.let { response ->
-                meals = response.meals
-                Log.i("hamzaF", "meals is in fragment/ $meals")
-                openSelectedCategory(0)
-                binding.notFoundTextView.showIf { meals.isEmpty() }
-            }
-        }
     }
 
     private suspend fun getCategories() {
@@ -104,23 +97,21 @@ class FilterCategoriesFragment : Fragment() {
     private fun openSelectedCategory(position: Int) {
         binding.tabLayout.getTabAt(position)?.select()
 
-        setUpRecyclerView(position)
-
+        setUpRecyclerView()
     }
 
-//    private fun getNameOfCategory(position: Int): String {
-//        return categoryList[position].strCategory
-//    }
+    private fun setUpRecyclerView() {
+        Log.i("hamzaF", "recyclerview is activated ")
+        filterViewModel.meals.observe(viewLifecycleOwner) {
+            filterCategoriesAdapter.differ.submitList(it?.meals)
+        }
 
-    private fun setUpRecyclerView(position: Int) {
-
-        Log.d("hamzaF", "meals is $meals")
-        filterCategoriesAdapter.differ.submitList(meals)
         binding.filterMealsRecyclerView.apply {
             layoutManager = GridLayoutManager(context, 2, LinearLayoutManager.VERTICAL, false)
             adapter = filterCategoriesAdapter
-            Log.d("hamzaF", "Recyclerview is activated")
+
         }
     }
 
 }
+

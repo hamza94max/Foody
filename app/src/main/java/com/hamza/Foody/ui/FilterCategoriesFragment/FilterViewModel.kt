@@ -1,7 +1,9 @@
 package com.hamza.Foody.ui.FilterCategoriesFragment
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.hamza.domain.entity.MealResponse
 import com.hamza.domain.usecase.GetMealsByCategory
@@ -16,7 +18,7 @@ class FilterViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _meals: MutableStateFlow<MealResponse?> = MutableStateFlow(null)
-    var meals: MutableStateFlow<MealResponse?> = _meals
+    var meals: LiveData<MealResponse?> = _meals.asLiveData()
 
 
     fun getMeals(categoryName: String) {
