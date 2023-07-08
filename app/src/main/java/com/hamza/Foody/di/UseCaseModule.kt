@@ -2,6 +2,7 @@ package com.hamza.Foody.di
 
 import com.hamza.domain.repo.MealsRepo
 import com.hamza.domain.usecase.GetCategories
+import com.hamza.domain.usecase.GetMealDetails
 import com.hamza.domain.usecase.GetMealsByCategory
 import dagger.Module
 import dagger.Provides
@@ -21,5 +22,10 @@ object UseCaseModule {
     @Provides
     fun provideMealsByCategoryUseCase(mealsRepo: MealsRepo): GetMealsByCategory {
         return GetMealsByCategory(mealsRepo)
+    }
+
+    @Provides
+    fun provideMealDetailsUseCase(mealsRepo: MealsRepo): GetMealDetails {
+        return GetMealDetails(mealsRepo)
     }
 }

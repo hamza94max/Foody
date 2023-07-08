@@ -24,7 +24,23 @@
         <argument
             android:name="category"
             app:argType="com.hamza.domain.entity.Category" />
+        <action
+            android:id="@+id/action_filterCategoriesFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
 
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/detailsFragment"
+        android:name="com.hamza.Foody.ui.DetailsFragment.DetailsFragment"
+        android:label="fragment_details"
+        tools:layout="@layout/fragment_details">
+
+
+        <argument
+            android:name="meal"
+            app:argType="com.hamza.domain.entity.Meal" />
 
     </fragment>
 </navigation>

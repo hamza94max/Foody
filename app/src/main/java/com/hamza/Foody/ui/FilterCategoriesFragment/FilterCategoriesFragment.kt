@@ -1,6 +1,7 @@
 package com.hamza.Foody.ui.FilterCategoriesFragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -102,6 +103,7 @@ class FilterCategoriesFragment : Fragment() {
     private fun setUpRecyclerView() {
         filterViewModel.meals.observe(viewLifecycleOwner) {
             filterCategoriesAdapter.differ.submitList(it?.meals)
+            Log.d("hamzaF", it?.meals.toString())
         }
 
         binding.filterMealsRecyclerView.apply {

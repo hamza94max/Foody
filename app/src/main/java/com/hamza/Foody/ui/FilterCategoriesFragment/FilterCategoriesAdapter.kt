@@ -4,6 +4,8 @@ package com.hamza.Foody.ui.FilterCategoriesFragment
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -14,6 +16,8 @@ import javax.inject.Inject
 
 class FilterCategoriesAdapter @Inject constructor() :
     RecyclerView.Adapter<FilterCategoriesAdapter.ViewHolder>() {
+
+    private lateinit var navController: NavController
 
     inner class ViewHolder(val binding: MealItemBinding) :
         RecyclerView.ViewHolder(binding.root)
@@ -49,6 +53,16 @@ class FilterCategoriesAdapter @Inject constructor() :
             .with(holder.itemView.context)
             .load(currentItem.imageOfMeal)
             .into(holder.binding.mealImageView)
+
+
+        holder.itemView.setOnClickListener {
+            navController = Navigation.findNavController(it)
+            val action =
+                FilterCategoriesFragmentDirections.actionFilterCategoriesFragmentToDetailsFragment(
+                    currentItem
+                )
+            navController.navigate(action)
+        }
 
     }
 
