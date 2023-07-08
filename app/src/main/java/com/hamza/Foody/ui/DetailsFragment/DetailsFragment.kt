@@ -1,5 +1,7 @@
 package com.hamza.Foody.ui.DetailsFragment
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -21,6 +23,9 @@ class DetailsFragment : Fragment() {
 
     private val detailsViewModel by viewModels<DetailsViewModel>()
 
+    lateinit var source: String
+    lateinit var youtubeLink: String
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -39,17 +44,30 @@ class DetailsFragment : Fragment() {
     }
 
     private fun setViews() {
-        detailsViewModel.mealDetails.observe(viewLifecycleOwner) {
+        detailsViewModel.mealDetails.observe(viewLifecycleOwner) { response ->
             binding.mealNameTextView.text = args.meal.mealName
-            binding.categoryNameTextView.text = it?.mealsDetailsList?.get(0)?.strCategory ?: "Null"
-            binding.countryNameTextView.text = it?.mealsDetailsList?.get(0)?.strArea ?: "Null"
+            binding.categoryNameTextView.text =
+                response?.mealsDetailsList?.get(0)?.strCategory ?: "Null"
+            binding.countryNameTextView.text = response?.mealsDetailsList?.get(0)?.strArea ?: "Null"
             binding.instructionsTextView.text =
-                it?.mealsDetailsList?.get(0)?.strInstructions ?: "Null"
+                response?.mealsDetailsList?.get(0)?.strInstructions ?: "Null"
 
-            it?.mealsDetailsList?.get(0)?.let { it1 -> addIngredientToIngredients(it1) }
-            it?.mealsDetailsList?.get(0)?.let { it1 -> addMeasures(it1) }
+            response?.mealsDetailsList?.get(0)?.let { it1 -> addIngredientToIngredients(it1) }
+            response?.mealsDetailsList?.get(0)?.let { it1 -> addMeasures(it1) }
+
+            source = response?.mealsDetailsList?.get(0)?.strSource.toString()
+            youtubeLink = response?.mealsDetailsList?.get(0)?.strYoutube.toString()
 
         }
+
+        binding.source.setOnClickListener {
+            openUrl(source)
+        }
+
+        binding.youtube.setOnClickListener {
+            openUrl(youtubeLink)
+        }
+
     }
 
     private fun addIngredientToIngredients(meal: MealDetails) {
@@ -81,7 +99,7 @@ class DetailsFragment : Fragment() {
     private fun getIngredient(ingredients: MutableList<String>) {
         val ingredientText = StringBuilder()
         for (ingredient: String in ingredients) {
-            if (ingredient != " " && ingredient.isNotEmpty()) {
+            if (ingredient != " " && ingredient.isNotEmpty() && !ingredient.isNullOrEmpty()) {
                 ingredientText.append("\n \u2022$ingredient")
             }
             putIngredient(ingredientText.toString())
@@ -130,5 +148,10 @@ class DetailsFragment : Fragment() {
 
     private fun putMeasuresText(measureText: String) {
         binding.measureTextView.text = measureText
+    }
+
+    private fun openUrl(url: String) {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        startActivity(intent)
     }
 }
